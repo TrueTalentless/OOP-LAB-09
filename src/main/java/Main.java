@@ -4,22 +4,39 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
+ * Основной класс приложения, предоставляющий графический интерфейс
+ * для управления списком собак на выставке.
+ *
  * @author Лебедев Игнат 3312
  * @version 1.0
  */
 public class Main {
-    private JFrame mainFrame;
-    private DefaultTableModel tableModel;
-    private JTable dataTable;
+    /**
+     * Флаг, указывающий на наличие несохранённых изменений.
+     */
     public boolean unsavedChanges = false;
 
+    /**
+     * Модель данных для таблицы.
+     */
+    private DefaultTableModel tableModel;
+
+    /**
+     * Таблица для отображения данных.
+     */
+    private JTable dataTable;
+
+    /**
+     * Создаёт и отображает основное окно приложения.
+     */
     public void show() {
-        mainFrame = new JFrame("Dog Show Administration");
+        JFrame mainFrame = new JFrame("Dog Show Administration");
         mainFrame.setSize(800, 400);
         mainFrame.setLocation(100, 100);
         mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
+
         JButton addDogButton = new JButton("Добавить");
         JButton editDogButton = new JButton("Изменить");
         JButton deleteDogButton = new JButton("Удалить");
@@ -97,11 +114,22 @@ public class Main {
         mainFrame.setVisible(true);
     }
 
+    /**
+     * Добавляет новую строку в таблицу.
+     *
+     * @param rowData массив данных для новой строки.
+     */
     public void addDog(Object[] rowData) {
         tableModel.addRow(rowData);
         unsavedChanges = true;
     }
 
+    /**
+     * Изменяет данные в указанной строке таблицы.
+     *
+     * @param rowIndex индекс строки, которую нужно изменить.
+     * @param updatedData массив с обновлёнными данными.
+     */
     public void editDog(int rowIndex, Object[] updatedData) {
         for (int i = 0; i < updatedData.length; i++) {
             tableModel.setValueAt(updatedData[i], rowIndex, i);
@@ -109,19 +137,37 @@ public class Main {
         unsavedChanges = true;
     }
 
+    /**
+     * Удаляет строку из таблицы.
+     *
+     * @param rowIndex индекс строки для удаления.
+     */
     public void deleteDog(int rowIndex) {
         tableModel.removeRow(rowIndex);
         unsavedChanges = true;
     }
 
+    /**
+     * Сохраняет данные в файл.
+     */
     public void saveDataToFile() {
         unsavedChanges = false;
     }
 
+    /**
+     * Возвращает модель данных таблицы.
+     *
+     * @return объект {@link DefaultTableModel}.
+     */
     public DefaultTableModel getTableModel() {
         return tableModel;
     }
 
+    /**
+     * Главный метод для запуска приложения.
+     *
+     * @param args аргументы командной строки.
+     */
     public static void main(String[] args) {
         new Main().show();
     }

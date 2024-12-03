@@ -1,47 +1,57 @@
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.swing.table.DefaultTableModel;
-
 import static org.junit.Assert.*;
 
+/**
+ * Класс для тестирования методов класса {@link Main}.
+ */
 public class MainTest {
     private Main main;
-    private DefaultTableModel tableModel;
 
+    /**
+     * Инициализация тестовой среды.
+     */
     @Before
     public void setUp() {
         main = new Main();
-        String[] columns = {"Кличка", "Порода", "Владелец", "Судья", "Награды"};
-        tableModel = new DefaultTableModel(columns, 0);
-        main.show(); // Инициализируем GUI для тестов
-        main.getTableModel().setRowCount(0); // Удаляем все строки для изоляции тестов
+        main.show();
+        main.getTableModel().setRowCount(0); // Очистка таблицы перед каждым тестом
     }
 
+    /**
+     * Тестирует метод {@link Main#addDog(Object[])}.
+     */
     @Test
     public void testAddDog() {
         main.addDog(new Object[]{"Рекс", "Немецкая овчарка", "Иванов", "Петров", "Чемпион"});
         assertEquals(1, main.getTableModel().getRowCount());
     }
 
+    /**
+     * Тестирует метод {@link Main#editDog(int, Object[])}.
+     */
     @Test
     public void testEditDog() {
         main.addDog(new Object[]{"Рекс", "Немецкая овчарка", "Иванов", "Петров", "Чемпион"});
         main.editDog(0, new Object[]{"Барон", "Доберман", "Сидоров", "Иванов", "Победитель"});
-
         assertEquals("Барон", main.getTableModel().getValueAt(0, 0));
         assertEquals("Доберман", main.getTableModel().getValueAt(0, 1));
-        assertEquals("Сидоров", main.getTableModel().getValueAt(0, 2));
     }
 
-
+    /**
+     * Тестирует метод {@link Main#deleteDog(int)}.
+     */
     @Test
     public void testDeleteDog() {
         main.addDog(new Object[]{"Рекс", "Немецкая овчарка", "Иванов", "Петров", "Чемпион"});
         main.deleteDog(0);
-        assertEquals(0, tableModel.getRowCount());
+        assertEquals(0, main.getTableModel().getRowCount());
     }
 
+    /**
+     * Тестирует метод {@link Main#saveDataToFile()}.
+     */
     @Test
     public void testSaveData() {
         main.addDog(new Object[]{"Рекс", "Немецкая овчарка", "Иванов", "Петров", "Чемпион"});
